@@ -1,12 +1,194 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi portafolio</title>
+    <title>Said Tovar | Android & KMP Developer</title>
+    <meta name="description" content="Portafolio profesional de Said Tovar, Ingeniero de Software especializado en Android y Kotlin Multiplatform.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Said Tovar | Portafolio">
+    <meta property="og:description" content="Especialista en Android Nativo y Kotlin Multiplatform.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/SaidTovar/AppMisDatosUniguajira/refs/heads/main/Mockup/5.png">
+
     <link type="text/css" rel="stylesheet" href="styles.css">
+    <script type="application/javascript" src="skiko.js"></script>
     <script type="application/javascript" src="composeApp.js"></script>
+
+    <style>
+        :root {
+            --primary: #3DDC84;
+            --bg-dark: #0F172A;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #FFFFFF;
+            --text-dim: rgba(255, 255, 255, 0.6);
+        }
+
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .loader-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 40px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: translateY(0);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 3px solid var(--primary);
+            padding: 4px;
+            object-fit: crop;
+            background: rgba(61, 220, 132, 0.1);
+        }
+
+        .loader-name {
+            color: var(--text-main);
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .loader-role {
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+        }
+
+        .loader-stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            color: var(--text-main);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), #2EB86B);
+            border-radius: 10px;
+            transition: width 3s linear;
+            box-shadow: 0 0 15px rgba(61, 220, 132, 0.4);
+        }
+
+        .loading-status {
+            margin-top: 12px;
+            color: var(--text-dim);
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .loaded #loader {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loaded .progress-bar {
+            width: 100% !important;
+        }
+    </style>
 </head>
-<body>
+<body onload="startProgress()">
+    <div id="loader">
+        <div class="loader-card">
+            <!-- Usamos la misma imagen que tienes en el proyecto -->
+            <img src="composeResources/miportafolio.composeapp.generated.resources/drawable/profile.png"
+                 class="profile-img"
+                 alt="Said Tovar"
+                 onerror="this.style.display='none'">
+
+            <h1 class="loader-name">Said Tovar</h1>
+            <div class="loader-role">Android & KMP Developer</div>
+
+            <div class="loader-stats">
+                <div class="stat-item">
+                    <span class="stat-value">+3</span>
+                    <span class="stat-label">Años Exp.</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">15+</span>
+                    <span class="stat-label">Proyectos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">KMP</span>
+                    <span class="stat-label">Expert</span>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div id="p-bar" class="progress-bar"></div>
+            </div>
+            <div class="loading-status">Inicializando Experiencia...</div>
+        </div>
+    </div>
+
+    <script>
+        function startProgress() {
+            setTimeout(() => {
+                document.getElementById('p-bar').style.width = '100%';
+            }, 100);
+        }
+    </script>
 </body>
 </html>
